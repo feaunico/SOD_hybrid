@@ -1,1 +1,35 @@
 
+
+#generate annotation file
+cat \
+<(grep '#CHROM' PR_hyb.names_formatted.vcf | cut -f 1-3) \
+<(paste \
+<(grep -v '#' PR_hyb.names_formatted.vcf | cut -f 1,2) \
+<(grep -v '#' PR_hyb.names_formatted.vcf | cut -f 1,2 | sed 's/\t/_/g')) > annotation_file.tab
+
+
+bgzip annotation_file.tab
+tabix -p vcf annotation_file.tab.gz
+
+#reannotate vcf according to annotation file 
+bcftools annotate -c CHROM,POS,ID -a annotation_file.tab.gz PR_hyb.names_formatted.vcf -o PR.vcf
+
+#prunne LD > 0.2 in 50bp windows
+plink --noweb --vcf PR.vcf --no-sex --maf 0.01 --allow-extra-chr --indep-pairwise 50 5 0.2 --recode vcf --out PR_pruned --double-id
+
+#resume final VCF
+grep -Fwvf PR_pruned.prune.out PR_pruned.vcf > PR.FINAL_LD0.2.vcf
+
+
+library(StAMPP)
+library(vcfR)
+vcf <- read.vcfR("PR.FINAL_LD0.2.vcf")
+x <- vcfR2genlight(vcf)
+pop(x)<-substr(indNames(x),1,6)
+library(adegenet)
+ploidy(x) <- 2
+aa.D.ind <- stamppNeisD(x, pop = FALSE)
+stamppPhylip(aa.D.ind, file="PR_ploidy2.indiv_Neis_distance.phy.dst")
+
+
+
