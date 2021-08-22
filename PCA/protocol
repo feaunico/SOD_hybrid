@@ -1,1 +1,33 @@
 
+
+library(gdsfmt)
+library(SNPRelate)
+
+snpgdsVCF2GDS("../PR_hyb.recode.vcf", "PR.gds", method="biallelic.only")
+
+genofile <- snpgdsOpen("PR.gds")
+
+#if prunning : 
+set.seed(53424)
+#  LD thresholds = 0.2 for sensitivity analysis
+snpset <- snpgdsLDpruning(genofile, ld.threshold=0.2,autosome.only = FALSE)
+snpset.id <- unlist(snpset)
+pca <- snpgdsPCA(genofile, snp.id=snpset.id, num.thread=2,autosome.only = FALSE)
+
+
+# no prunning : 
+#pca <- snpgdsPCA(genofile, num.thread=2,autosome.only = FALSE)
+
+
+
+
+pc.percent <- pca$varprop*100
+head(round(pc.percent, 2))
+
+tab <- data.frame(sample.id = pca$sample.id,
+    EV1 = pca$eigenvect[,1],    # the first eigenvector
+    EV2 = pca$eigenvect[,2],    # the second eigenvector
+    EV3 = pca$eigenvect[,3],    # the second eigenvector
+    stringsAsFactors = FALSE)
+
+write.table(tab, "LD02.txt")
