@@ -1,6 +1,2 @@
 
-Use PR_hyb.recode.vcf VCF file to count reads for the "minor" allele at heterozygous sites in the two hybrids samples (16_237_021 and 16_284_032). 
-Proportion of the two alleles at heterozygous sites in a first generation hybrid should be equal to 0.5. 
-Generate Figure S1 reporting distribtution for this counts and stat. test for goodness of fit to expected proportions.
-
-input PR_hyb.recode.vcf
+BNaive bBayes assignment of P. ramorum samples (next generation libraries in SRA or fastq format) to P. ramorum lineages and F1 hybrids
