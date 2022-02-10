@@ -1,2 +1,15 @@
 
-BNaive bBayes assignment of P. ramorum samples (next generation libraries in SRA or fastq format) to P. ramorum lineages and F1 hybrids
+Naive bBayes assignment of P. ramorum samples (next generation libraries in SRA or fastq format) to P. ramorum lineages and F1 hybrids.
+
+
+input:
+
+fast_q or SRA library containing Illumina or ion Torrent reads of a P. ramorum sample.
+SRA files need to be converted in fastq with the SRA-toolkit (https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc):
+
+fastq-dump --split-files name_of_SRA_file 
+
+usage:
+
+python2.7 ASSIGM.py <ref_genome> <training_set> <fastq_reads> #single-end library
+python2.7 ASSIGM.py <ref_genome> <training_set> <fastq_reads_1> <fastq_reads_2> #pair-end library
