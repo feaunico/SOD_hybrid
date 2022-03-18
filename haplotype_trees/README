@@ -1,3 +1,10 @@
 PHRA102_229 = conserved hypothetical protein (14 sites phased for all individuals)
 PHRA102_339 = Peroxisomal membrane protein (15 sites phased for all individuals)
 PHRA102_229 = Cell 12A endoglucanase (11 sites phased for all individuals)
+
+
+FASTA_GENES.py ==> For each P. ramorum gene: 1 - reconstruct haploptypes in FASTA format based on phasing information present in VCF;
+                                             2 - call RAxML for construction of haplotype phylogenies
+                                             
+Input  = reference P. ramroum genome
+       = PR_hyb.recode.vcf
